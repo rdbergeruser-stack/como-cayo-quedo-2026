@@ -115,7 +115,13 @@ const EEA_CONFIG = {
         { id: "rem", nombre: "🎹 MÚSICA REMATE", archivo: "Audio/Remate.mp3", color: "#2196F3" }
     ],
 
-    // 4. Colores de fondo para el proyector
+    // 4. Equipos para el tanteador (Rojo vs Verde)
+    equipos: {
+        rojo: { nombre: "EQUIPO ROJO", color: "#E63946", colorLight: "#ff5c6a", colorDark: "#8f111c" },
+        verde: { nombre: "EQUIPO VERDE", color: "#16a34a", colorLight: "#4ade80", colorDark: "#14532d" }
+    },
+
+    // 5. Colores de fondo para el proyector
     coloresFondo: ['#0f172a', '#1e1b4b', '#172554', '#042f2e', '#2e1065', '#3b0764', '#18181b'],
 
     channelName: 'eea_impro_2026',

@@ -15,6 +15,8 @@ const connStatus = document.getElementById('conn-status');
 const btnSorteoGenero = document.getElementById('btn-sorteo-genero');
 const btnBlackout = document.getElementById('btn-blackout');
 const controlToast = document.getElementById('control-toast');
+const inputPuntajeRojo = document.getElementById('input-puntaje-rojo');
+const inputPuntajeVerde = document.getElementById('input-puntaje-verde');
 
 let currentAudioBtnId = null;
 let ultimoContactoProyector = 0;
@@ -121,6 +123,67 @@ function inicializarUI() {
     document.getElementById('btn-video-logo').onclick = () => enviarAccion('LANZAR_VIDEO', { nombre: 'logo', ig: true });
     document.getElementById('btn-video-inicio').onclick = () => enviarAccion('LANZAR_VIDEO', { nombre: 'inicio' });
     document.getElementById('btn-video-gorra').onclick = () => enviarAccion('LANZAR_VIDEO', { nombre: 'gorra' });
+
+    // 3B. Tanteador (Rojo vs Verde)
+    const leerPuntaje = (inputEl) => {
+        const val = parseInt(inputEl?.value, 10);
+        return Number.isNaN(val) ? 0 : Math.max(0, val);
+    };
+
+    const enviarPuntajeDirecto = () => {
+        const rojo = leerPuntaje(inputPuntajeRojo);
+        const verde = leerPuntaje(inputPuntajeVerde);
+        if (inputPuntajeRojo) inputPuntajeRojo.value = rojo;
+        if (inputPuntajeVerde) inputPuntajeVerde.value = verde;
+        enviarAccion('ACTUALIZAR_TANTEADOR', { rojo, verde });
+    };
+
+    document.getElementById('btn-rojo-mas').onclick = () => {
+        const nuevo = leerPuntaje(inputPuntajeRojo) + 1;
+        inputPuntajeRojo.value = nuevo;
+        enviarAccion('ACTUALIZAR_TANTEADOR', { rojo: nuevo });
+    };
+
+    document.getElementById('btn-rojo-menos').onclick = () => {
+        const nuevo = Math.max(0, leerPuntaje(inputPuntajeRojo) - 1);
+        inputPuntajeRojo.value = nuevo;
+        enviarAccion('ACTUALIZAR_TANTEADOR', { rojo: nuevo });
+    };
+
+    document.getElementById('btn-verde-mas').onclick = () => {
+        const nuevo = leerPuntaje(inputPuntajeVerde) + 1;
+        inputPuntajeVerde.value = nuevo;
+        enviarAccion('ACTUALIZAR_TANTEADOR', { verde: nuevo });
+    };
+
+    document.getElementById('btn-verde-menos').onclick = () => {
+        const nuevo = Math.max(0, leerPuntaje(inputPuntajeVerde) - 1);
+        inputPuntajeVerde.value = nuevo;
+        enviarAccion('ACTUALIZAR_TANTEADOR', { verde: nuevo });
+    };
+
+    inputPuntajeRojo.addEventListener('change', enviarPuntajeDirecto);
+    inputPuntajeVerde.addEventListener('change', enviarPuntajeDirecto);
+    inputPuntajeRojo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') enviarPuntajeDirecto();
+    });
+    inputPuntajeVerde.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') enviarPuntajeDirecto();
+    });
+
+    document.getElementById('btn-mostrar-tanteador').onclick = () => {
+        enviarPuntajeDirecto();
+        enviarAccion('MOSTRAR_TANTEADOR');
+    };
+
+    document.getElementById('btn-reset-tanteador').onclick = () => {
+        const rojo = leerPuntaje(inputPuntajeRojo);
+        const verde = leerPuntaje(inputPuntajeVerde);
+        if ((rojo > 0 || verde > 0) && !confirm('¿Reiniciar el tanteador a 0 - 0?')) return;
+        inputPuntajeRojo.value = 0;
+        inputPuntajeVerde.value = 0;
+        enviarAccion('ACTUALIZAR_TANTEADOR', { rojo: 0, verde: 0 });
+    };
 
     // 4. Estructura del Show: Disparadores de Géneros
     document.getElementById('btn-banquito-directo').onclick = () => {
@@ -319,6 +382,14 @@ function actualizarMonitor(data) {
 
     if (data.btnAudioActivo !== undefined) {
         marcarAudioSeleccionado(data.btnAudioActivo);
+    }
+
+    if (data.puntajeRojo !== undefined && inputPuntajeRojo && document.activeElement !== inputPuntajeRojo) {
+        inputPuntajeRojo.value = data.puntajeRojo;
+    }
+
+    if (data.puntajeVerde !== undefined && inputPuntajeVerde && document.activeElement !== inputPuntajeVerde) {
+        inputPuntajeVerde.value = data.puntajeVerde;
     }
 }
 

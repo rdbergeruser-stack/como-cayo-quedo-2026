@@ -201,6 +201,86 @@ button:disabled {
 #control-toast.error { background: #dc2626; }
 #control-toast.info { background: #0284c7; }
 
+/* TANTEADOR EN EL PANEL DE CONTROL */
+.team-control-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 3px solid black;
+    box-shadow: 3px 3px 0 black;
+}
+
+.team-rojo-card {
+    background: linear-gradient(160deg, #b91c1c, #7f1d1d);
+}
+
+.team-verde-card {
+    background: linear-gradient(160deg, #15803d, #14532d);
+}
+
+.team-control-title {
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: 2px 2px 0 black;
+}
+
+.score-stepper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-step {
+    width: 38px;
+    height: 42px;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0;
+    color: #111;
+    background: #ffd60a;
+    border: 3px solid black;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0 black;
+    flex-shrink: 0;
+}
+
+.btn-step-minus {
+    background: #e5e7eb;
+}
+
+.score-input {
+    width: 64px;
+    height: 42px;
+    font-family: 'Luckiest Guy Local', sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+    background: #ffffff;
+    color: #111111;
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 2px 4px;
+    -moz-appearance: textfield;
+}
+
+.score-input::-webkit-outer-spin-button,
+.score-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.tanteador-actions {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    margin-top: 2px;
+}
+
 /* GRILLA PRINCIPAL */
 .grilla-maestra {
     display: grid;

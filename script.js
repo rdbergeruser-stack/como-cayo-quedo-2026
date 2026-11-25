@@ -44,6 +44,8 @@ let girando = false;
 let estado = "TABLERO";
 let blackoutActivo = false;
 let ultimoGanador = '';
+let puntajeRojo = 0;
+let puntajeVerde = 0;
 let volumenActual = cfg.defaultSettings.volumenInicial ?? 1.0;
 let ultimoBtnAudioId = null;
 let ultimoAudioNombre = "Silencio";
@@ -64,6 +66,8 @@ function guardarEstadoShow() {
             bolsaAzar,
             generosJugados: Array.from(generosJugados),
             ultimoGanador,
+            puntajeRojo,
+            puntajeVerde,
             currentRotation,
             volumenActual
         };
@@ -85,6 +89,12 @@ function cargarEstadoShow() {
         }
         if (typeof data.ultimoGanador === 'string') {
             ultimoGanador = data.ultimoGanador;
+        }
+        if (typeof data.puntajeRojo === 'number' && Number.isFinite(data.puntajeRojo)) {
+            puntajeRojo = Math.max(0, Math.floor(data.puntajeRojo));
+        }
+        if (typeof data.puntajeVerde === 'number' && Number.isFinite(data.puntajeVerde)) {
+            puntajeVerde = Math.max(0, Math.floor(data.puntajeVerde));
         }
         if (typeof data.currentRotation === 'number' && Number.isFinite(data.currentRotation)) {
             currentRotation = data.currentRotation % 360;
@@ -122,6 +132,8 @@ function notificarCanalControl(tipo = 'STATE_UPDATE', extra = {}) {
             contadorSorteo,
             quedanEnBolsa: bolsaAzar.length,
             generosJugados: Array.from(generosJugados),
+            puntajeRojo,
+            puntajeVerde,
             girando,
             blackoutActivo,
             volumen: volumenActual,
@@ -145,7 +157,19 @@ const ruletaAgujaBox = document.getElementById('ruleta-aguja-box');
 const bannerGanador = document.getElementById('pop-genero-ganador');
 const textoGanador = document.getElementById('pop-genero-nombre');
 const overlayBlackout = document.getElementById('overlay-blackout');
+const overlayTanteador = document.getElementById('overlay-tanteador');
+const scoreRojoDisplay = document.getElementById('score-rojo-display');
+const scoreVerdeDisplay = document.getElementById('score-verde-display');
+const cardEquipoRojo = document.getElementById('card-equipo-rojo');
+const cardEquipoVerde = document.getElementById('card-equipo-verde');
+const nombreEquipoRojo = document.getElementById('nombre-equipo-rojo');
+const nombreEquipoVerde = document.getElementById('nombre-equipo-verde');
 const ctxRuleta = ruletaCanvas.getContext('2d');
+
+if (cfg.equipos) {
+    if (nombreEquipoRojo && cfg.equipos.rojo?.nombre) nombreEquipoRojo.textContent = cfg.equipos.rojo.nombre;
+    if (nombreEquipoVerde && cfg.equipos.verde?.nombre) nombreEquipoVerde.textContent = cfg.equipos.verde.nombre;
+}
 
 // Manejo de errores en carga de videos (evita pantalla negra colgada si falta el archivo)
 if (videoPlayer) {
@@ -523,8 +547,74 @@ function dibujarRuleta() {
     }
 }
 
+function renderizarTanteador(animarRojo = false, animarVerde = false) {
+    if (scoreRojoDisplay) {
+        scoreRojoDisplay.textContent = String(puntajeRojo);
+        if (animarRojo) {
+            scoreRojoDisplay.classList.remove('score-pop');
+            void scoreRojoDisplay.offsetWidth;
+            scoreRojoDisplay.classList.add('score-pop');
+            setTimeout(() => scoreRojoDisplay.classList.remove('score-pop'), 220);
+        }
+    }
+    if (scoreVerdeDisplay) {
+        scoreVerdeDisplay.textContent = String(puntajeVerde);
+        if (animarVerde) {
+            scoreVerdeDisplay.classList.remove('score-pop');
+            void scoreVerdeDisplay.offsetWidth;
+            scoreVerdeDisplay.classList.add('score-pop');
+            setTimeout(() => scoreVerdeDisplay.classList.remove('score-pop'), 220);
+        }
+    }
+    if (cardEquipoRojo && cardEquipoVerde) {
+        cardEquipoRojo.classList.toggle('lider', puntajeRojo > puntajeVerde);
+        cardEquipoVerde.classList.toggle('lider', puntajeVerde > puntajeRojo);
+    }
+}
+
+function mostrarTanteador() {
+    cancelarGiroYTimers();
+    setBlackout(false);
+    ocultarTodosLosOverlays(true);
+    renderizarTanteador();
+    if (overlayTanteador) overlayTanteador.style.display = 'flex';
+    estado = "TANTEADOR";
+    actualizarControlUI();
+}
+window.mostrarTanteador = mostrarTanteador;
+
+function actualizarTanteador({ rojo, verde, deltaRojo = 0, deltaVerde = 0 } = {}) {
+    const prevRojo = puntajeRojo;
+    const prevVerde = puntajeVerde;
+
+    if (typeof rojo === 'number' && Number.isFinite(rojo)) {
+        puntajeRojo = Math.max(0, Math.floor(rojo));
+    } else if (deltaRojo) {
+        puntajeRojo = Math.max(0, puntajeRojo + deltaRojo);
+    }
+
+    if (typeof verde === 'number' && Number.isFinite(verde)) {
+        puntajeVerde = Math.max(0, Math.floor(verde));
+    } else if (deltaVerde) {
+        puntajeVerde = Math.max(0, puntajeVerde + deltaVerde);
+    }
+
+    const cambioRojo = puntajeRojo !== prevRojo;
+    const cambioVerde = puntajeVerde !== prevVerde;
+
+    if (estado === "TANTEADOR" && (puntajeRojo > prevRojo || puntajeVerde > prevVerde)) {
+        playPopCategoria(puntajeRojo > prevRojo ? 560 : 660);
+    }
+
+    renderizarTanteador(cambioRojo, cambioVerde);
+    guardarEstadoShow();
+    actualizarControlUI();
+}
+window.actualizarTanteador = actualizarTanteador;
+
 // Restaurar estado guardado antes del primer renderizado
 cargarEstadoShow();
+renderizarTanteador();
 audioMaster.volume = volumenActual;
 videoPlayer.volume = volumenActual;
 if (currentRotation !== 0) {
@@ -551,6 +641,7 @@ function obtenerTextoEstado() {
         case "ESPERANDO_INPUT": return `🎯 Ganador: ${ultimoGanador || ''}`;
         case "PLACA_LIMPIA": return `Placa: ${ultimoGanador || ''}`;
         case "REVELADO": return `En Escena: ${ultimoGanador || ''}`;
+        case "TANTEADOR": return `Tanteador: Rojo ${puntajeRojo} - Verde ${puntajeVerde}`;
         case "MULTIMEDIA": return "Multimedia en Pantalla";
         default: return estado;
     }
@@ -589,6 +680,7 @@ function ocultarTodosLosOverlays(pausarVideo = true) {
     document.getElementById('overlay-genero').style.display = 'none';
     document.getElementById('overlay-video').style.display = 'none';
     document.getElementById('overlay-logo-fijo').style.display = 'none';
+    if (overlayTanteador) overlayTanteador.style.display = 'none';
     document.getElementById('marquesina').classList.remove('show');
     if (bannerGanador) bannerGanador.classList.remove('show');
     if (pausarVideo && videoPlayer) {
@@ -1139,6 +1231,9 @@ function reiniciarShow() {
     generosJugados.clear();
     currentRotation = 0;
     ultimoGanador = '';
+    puntajeRojo = 0;
+    puntajeVerde = 0;
+    renderizarTanteador();
     limpiarEstadoGuardado();
 
     ruletaCanvas.style.transition = 'none';
@@ -1173,7 +1268,7 @@ window.addEventListener('keydown', (e) => {
     if (e.code === "Space") {
         e.preventDefault();
         if (estado === "TABLERO") sortear();
-        else if (estado === "REVELADO" || estado === "MULTIMEDIA" || estado === "PLACA_LIMPIA") cerrarTodoYTablero();
+        else if (estado === "REVELADO" || estado === "MULTIMEDIA" || estado === "PLACA_LIMPIA" || estado === "TANTEADOR") cerrarTodoYTablero();
     }
     if (e.key === "f" || e.key === "F") {
         toggleFullscreen();
@@ -1228,6 +1323,12 @@ if (canalProyector) {
                 break;
             case 'VOLVER_TABLERO':
                 cerrarTodoYTablero();
+                break;
+            case 'MOSTRAR_TANTEADOR':
+                mostrarTanteador();
+                break;
+            case 'ACTUALIZAR_TANTEADOR':
+                actualizarTanteador(payload);
                 break;
             case 'TOGGLE_BLACKOUT':
                 toggleBlackout();

@@ -30,17 +30,48 @@
     <!-- GRILLA MAESTRA EN 3 COLUMNAS -->
     <main class="grilla-maestra">
 
-        <!-- COLUMNA 1: MULTIMEDIA & APERTURA -->
+        <!-- COLUMNA 1: MULTIMEDIA & APERTURA + TANTEADOR -->
         <div class="columna">
-            <div class="seccion" style="border-color: var(--color-azul); flex-grow: 1;">
+            <div class="seccion" style="border-color: var(--color-azul);">
                 <h2 style="color: var(--color-azul);">MULTIMEDIA & INTRO</h2>
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 4px;">
-                    <button class="btn-principal" id="btn-comienzo" style="font-size: 1.3rem; height: 60px;">🎭 0. COMIENZO (TELÓN)</button>
-                    <button class="btn-secundario" id="btn-video-inicio-gracioso" style="background:#7209b7; font-weight: bold; height: 50px;">😂 INICIO GRACIOSO</button>
-                    <button class="btn-secundario" id="btn-logo-fijo" style="background:#4CAF50; height: 50px;">🖼 LOGO IMAGEN</button>
-                    <button class="btn-secundario" id="btn-video-logo" style="background:#009688; height: 50px;">🎥 VIDEO LOGO</button>
-                    <button class="btn-secundario" id="btn-video-inicio" style="background:#8338ec; height: 50px;">🎥 VIDEO INICIO</button>
-                    <button class="btn-secundario" id="btn-video-gorra" style="background:#ff006e; height: 50px;">🎩 VIDEO GORRA</button>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 2px;">
+                    <button class="btn-principal" id="btn-comienzo" style="font-size: 1.2rem; height: 50px;">🎭 0. COMIENZO (TELÓN)</button>
+                    <button class="btn-secundario" id="btn-video-inicio-gracioso" style="background:#7209b7; font-weight: bold; height: 42px;">😂 INICIO GRACIOSO</button>
+                    <div class="grid-2">
+                        <button class="btn-secundario" id="btn-logo-fijo" style="background:#4CAF50; height: 42px; font-size: 1rem;">🖼 LOGO IMG</button>
+                        <button class="btn-secundario" id="btn-video-logo" style="background:#009688; height: 42px; font-size: 1rem;">🎥 VID. LOGO</button>
+                    </div>
+                    <div class="grid-2">
+                        <button class="btn-secundario" id="btn-video-inicio" style="background:#8338ec; height: 42px; font-size: 1rem;">🎥 VID. INICIO</button>
+                        <button class="btn-secundario" id="btn-video-gorra" style="background:#ff006e; height: 42px; font-size: 1rem;">🎩 VID. GORRA</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TANTEADOR ROJO VS VERDE -->
+            <div class="seccion" style="border-color: var(--color-amarillo); flex-grow: 1;">
+                <h2>🏆 TANTEADOR (ROJO VS VERDE)</h2>
+                <div class="grid-2">
+                    <div class="team-control-card team-rojo-card">
+                        <span class="team-control-title">🔴 ROJO</span>
+                        <div class="score-stepper">
+                            <button class="btn-step btn-step-minus" id="btn-rojo-menos" title="Restar 1 punto al Equipo Rojo">−</button>
+                            <input type="number" id="input-puntaje-rojo" class="score-input" min="0" value="0" aria-label="Puntaje Equipo Rojo">
+                            <button class="btn-step btn-step-plus" id="btn-rojo-mas" title="Sumar 1 punto al Equipo Rojo">+</button>
+                        </div>
+                    </div>
+                    <div class="team-control-card team-verde-card">
+                        <span class="team-control-title">🟢 VERDE</span>
+                        <div class="score-stepper">
+                            <button class="btn-step btn-step-minus" id="btn-verde-menos" title="Restar 1 punto al Equipo Verde">−</button>
+                            <input type="number" id="input-puntaje-verde" class="score-input" min="0" value="0" aria-label="Puntaje Equipo Verde">
+                            <button class="btn-step btn-step-plus" id="btn-verde-mas" title="Sumar 1 punto al Equipo Verde">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tanteador-actions">
+                    <button class="btn-principal" id="btn-mostrar-tanteador" style="background: var(--color-amarillo); color: #111; font-size: 1.2rem; padding: 10px;">📊 MOSTRAR TANTEADOR</button>
+                    <button class="btn-secundario" id="btn-reset-tanteador" style="background: #444; width: auto; padding: 10px 14px; font-size: 1rem;" title="Poner ambos puntajes en 0">↺ 0-0</button>
                 </div>
             </div>
         </div>

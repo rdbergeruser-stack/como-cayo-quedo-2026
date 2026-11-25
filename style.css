@@ -251,7 +251,7 @@ body {
 
 .logo-full-centrado {
     width: 85vw; height: 85vh; object-fit: contain;
-    position: absolute; top: 5%; z-index: 101;
+    z-index: 101;
 }
 
 .instagram-banner {

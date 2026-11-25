@@ -110,7 +110,6 @@ const EEA_CONFIG = {
 
     // 3. Audios especiales del espectáculo
     audiosEspeciales: [
-        { id: "char", nombre: "🎙 PRES. CHARTON", archivo: "Audio/Charton.mp3", color: "#8338ec" },
         { id: "pres", nombre: "🎤 MÚSICA PRES.", archivo: "Audio/Presentacion.mp3", color: "#4CAF50" },
         { id: "rem", nombre: "🎹 MÚSICA REMATE", archivo: "Audio/Remate.mp3", color: "#2196F3" }
     ],

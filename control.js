@@ -116,13 +116,9 @@ function inicializarUI() {
         sorteoStepHint.textContent = obtenerTextoPrimerSorteo();
     }
 
-    // 3. Multimedia & Apertura
-    document.getElementById('btn-comienzo').onclick = () => enviarAccion('LANZAR_COMIENZO');
+    // 3. Multimedia
     document.getElementById('btn-video-inicio-gracioso').onclick = () => enviarAccion('LANZAR_INICIO_GRACIOSO');
     document.getElementById('btn-logo-fijo').onclick = () => enviarAccion('LANZAR_LOGO_FIJO');
-    document.getElementById('btn-video-logo').onclick = () => enviarAccion('LANZAR_VIDEO', { nombre: 'logo', ig: true });
-    document.getElementById('btn-video-inicio').onclick = () => enviarAccion('LANZAR_VIDEO', { nombre: 'inicio' });
-    document.getElementById('btn-video-gorra').onclick = () => enviarAccion('LANZAR_VIDEO', { nombre: 'gorra' });
 
     // 3B. Tanteador (Rojo vs Verde)
     const leerPuntaje = (inputEl) => {

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EEA Impro 2026 - Proyector HD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Botón discreto para abrir la consola de control si se corre en la misma máquina -->
+    <div id="control-trigger" onclick="abrirControl()" title="Abrir Consola de Control">+</div>
+
+    <!-- Elementos de Audio de Alta Definición -->
+    <audio id="audio-master" preload="auto"></audio>
+    <audio id="audio-tick" src="Audio/wheel_tick_hd.wav" preload="auto"></audio>
+    <audio id="audio-settle" src="Audio/wheel_settle_hd.wav" preload="auto"></audio>
+
+    <!-- Fondo de marca en el escenario -->
+    <img src="Logo/Logo.png" id="logo-fondo-tablero" alt="">
+
+    <!-- ESCENARIO DE LA RULETA HD (5 GÉNEROS SORTEABLES) -->
+    <div id="ruleta-stage">
+        <div id="ruleta-wrapper">
+            <!-- Halo luminoso de fondo -->
+            <div id="ruleta-halo-glow"></div>
+
+            <!-- Canvas 2048x2048 Retina 4K HD -->
+            <canvas id="ruleta-canvas" width="2048" height="2048"></canvas>
+            
+            <!-- Aguja / Puntero indicador superior con física mecánica de rebote -->
+            <div id="ruleta-aguja-box">
+                <div id="ruleta-aguja"></div>
+                <div id="ruleta-aguja-perno"></div>
+            </div>
+
+            <!-- Centro dorado metálico (Boss 3D) con gema central -->
+            <div id="ruleta-centro-hub">
+                <div class="hub-gem"></div>
+            </div>
+        </div>
+
+        <!-- PLACA GIGANTE HORIZONTAL ENFRENTE DE LA RULETA AL SALIR SORTEADO -->
+        <div id="pop-genero-ganador">
+            <div class="pop-genero-badge">★ GÉNERO ELEGIDO ★</div>
+            <div id="pop-genero-nombre">ÚLTIMA PALABRA</div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Género Revelado y Título (Marquesina) -->
+    <div id="overlay-genero">
+        <img src="" id="img-revelada" alt="Placa de Género">
+        <div id="marquesina">
+            <h1 id="texto-titulo"></h1>
+        </div>
+    </div>
+
+    <!-- Pantalla de Videos con Banner de Instagram opcional -->
+    <div id="overlay-video">
+        <video id="video-player" loop playsinline preload="auto"></video>
+        <div class="instagram-banner" id="ig-banner-video" style="display: none;">
+            <img src="Logo/ig.png" alt="Instagram">
+            <span>@enelactoimpro</span>
+        </div>
+    </div>
+
+    <!-- Pantalla Logo Fijo + Instagram -->
+    <div id="overlay-logo-fijo">
+        <img src="Logo/Logo.png" class="logo-full-centrado" alt="EEA Logo">
+        <div class="instagram-banner">
+            <img src="Logo/ig.png" alt="Instagram">
+            <span>@enelactoimpro</span>
+        </div>
+    </div>
+
+    <!-- Intro de Apertura (Telón de Teatro y Reflectores) -->
+    <div id="overlay-comienzo">
+        <div id="theatre-stage">
+            <div class="curtain-panel curtain-left" id="curtain-left">
+                <div class="curtain-folds"></div>
+                <div class="curtain-gold-trim"></div>
+            </div>
+            <div class="curtain-panel curtain-right" id="curtain-right">
+                <div class="curtain-folds"></div>
+                <div class="curtain-gold-trim"></div>
+            </div>
+            <div class="curtain-top" id="curtain-top">
+                <div class="valance-swags">
+                    <div class="swag"></div>
+                    <div class="swag"></div>
+                    <div class="swag"></div>
+                    <div class="swag"></div>
+                    <div class="swag"></div>
+                </div>
+                <div class="valance-gold-fringe"></div>
+            </div>
+        </div>
+
+        <canvas id="canvas-comienzo-fx"></canvas>
+
+        <div id="intro-logo-box">
+            <div class="logo-theatre-glow" id="logo-glow"></div>
+            <img src="Logo/Logo.png" id="intro-logo-img" alt="EEA Logo">
+        </div>
+
+        <div class="instagram-banner" id="intro-ig-banner">
+            <img src="Logo/ig.png" alt="Instagram">
+            <span>@enelactoimpro</span>
+        </div>
+
+        <div id="intro-flash-screen"></div>
+    </div>
+
+    <!-- Pantalla Negra (Blackout / Pánico teatral) -->
+    <div id="overlay-blackout"></div>
+
+    <!-- Scripts de configuración y proyector -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

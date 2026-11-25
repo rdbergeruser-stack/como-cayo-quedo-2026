@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EEA Impro 2026 - Panel de Control</title>
+    <link rel="stylesheet" href="control.css">
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR: MONITOR EN VIVO Y ACCIONES -->
+    <header class="top-bar">
+        <div class="live-monitor">
+            <span class="conn-pill desconectado" id="conn-status" title="Estado de conexión con el proyector">● SIN PROYECTOR</span>
+            <span class="live-badge">● EN PANTALLA</span>
+            <span class="live-status-text" id="live-status-text">Ruleta HD Lista</span>
+        </div>
+        <div class="current-genre-badge-box">
+            <span id="genero-sorteado-badge" class="genero-pill">Sin género activo</span>
+        </div>
+        <div class="top-actions">
+            <button class="btn-top btn-top-blackout" id="btn-blackout" title="Alternar pantalla negra de pánico (Tecla B en proyector)">⬛ Blackout</button>
+            <button class="btn-top" id="btn-fullscreen-toggle" title="Alternar pantalla completa en el proyector (o tecla F en proyector)">⛶ Pantalla Completa</button>
+            <button class="btn-top btn-top-reset" id="btn-reset-show" title="Reiniciar el show por completo">⚠️ Reiniciar Show</button>
+        </div>
+    </header>
+
+    <!-- NOTIFICACIÓN NO BLOQUEANTE PARA EL OPERADOR -->
+    <div id="control-toast" role="status" aria-live="polite"></div>
+
+    <!-- GRILLA MAESTRA EN 3 COLUMNAS -->
+    <main class="grilla-maestra">
+
+        <!-- COLUMNA 1: MULTIMEDIA & APERTURA -->
+        <div class="columna">
+            <div class="seccion" style="border-color: var(--color-azul); flex-grow: 1;">
+                <h2 style="color: var(--color-azul);">MULTIMEDIA & INTRO</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 4px;">
+                    <button class="btn-principal" id="btn-comienzo" style="font-size: 1.3rem; height: 60px;">🎭 0. COMIENZO (TELÓN)</button>
+                    <button class="btn-secundario" id="btn-video-inicio-gracioso" style="background:#7209b7; font-weight: bold; height: 50px;">😂 INICIO GRACIOSO</button>
+                    <button class="btn-secundario" id="btn-logo-fijo" style="background:#4CAF50; height: 50px;">🖼 LOGO IMAGEN</button>
+                    <button class="btn-secundario" id="btn-video-logo" style="background:#009688; height: 50px;">🎥 VIDEO LOGO</button>
+                    <button class="btn-secundario" id="btn-video-inicio" style="background:#8338ec; height: 50px;">🎥 VIDEO INICIO</button>
+                    <button class="btn-secundario" id="btn-video-gorra" style="background:#ff006e; height: 50px;">🎩 VIDEO GORRA</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMNA 2: ESTRUCTURA DEL SHOW Y ESCENA -->
+        <div class="columna">
+            <!-- 1. DISPARADORES DE GÉNEROS -->
+            <div class="seccion" style="border-color: var(--color-amarillo);">
+                <h2>ESTRUCTURA DEL SHOW</h2>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    
+                    <!-- 1º Banquito (Directo - Fuera de la Ruleta) -->
+                    <button id="btn-banquito-directo" class="btn-principal btn-banquito">
+                        🪑 1. BANQUITO (DIRECTO)
+                        <span class="btn-subtext">1º Escena • Directo desde Control</span>
+                    </button>
+
+                    <!-- 2º Sorteo en Ruleta HD (1º Última palabra arreglado, luego 4 libres) -->
+                    <button id="btn-sorteo-genero" class="btn-principal btn-sorteo">
+                        🎰 2. GIRAR RULETA HD
+                        <span class="btn-subtext" id="sorteo-step-hint">Próximo sorteo: 🎯 Última palabra (Arreglado)</span>
+                    </button>
+
+                    <!-- 3º Director (Cierre Directo - Fuera de la Ruleta) -->
+                    <button id="btn-director-directo" class="btn-principal btn-director">
+                        🎬 3. DIRECTOR (CIERRE)
+                        <span class="btn-subtext">Gran Cierre • Directo desde Control</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- 2. CONTROL DE LA ESCENA (TÍTULO Y PLACA) -->
+            <div class="seccion" style="flex-grow: 1; border-color: var(--color-verde);">
+                <h2 style="color: var(--color-verde);">LA ESCENA</h2>
+                <input type="text" id="input-titulo" placeholder="ESCRIBÍ EL TÍTULO AQUÍ..." autocomplete="off">
+                
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+                    <button class="btn-secundario" id="btn-fase1" style="height: 52px; font-size: 1.25rem;">🎬 VER PLACA LIMPIA</button>
+                    <button class="btn-secundario" id="btn-fase2" style="background: var(--color-rojo); height: 55px; font-size: 1.35rem;">🏆 MOSTRAR TÍTULO [ENTER]</button>
+                </div>
+            </div>
+
+            <!-- 3. VOLVER A LA RULETA -->
+            <button class="btn-principal" id="btn-volver-tablero" style="background: #ffffff; color: #111; height: 60px;">🔄 VOLVER A LA RULETA</button>
+        </div>
+
+        <!-- COLUMNA 3: AUDIO Y CONTROL MAESTRO -->
+        <div class="columna">
+            <div class="seccion" style="flex-grow: 1;">
+                <h2>CORTINAS POR GÉNERO</h2>
+                <div class="grid-2" id="contenedor-audios-generos">
+                    <!-- Generado dinámicamente -->
+                </div>
+
+                <h2 style="margin-top: 10px; border-top: 2px dashed #555; padding-top: 8px;">ESPECIALES</h2>
+                <div style="display: flex; flex-direction: column; gap: 6px;" id="contenedor-audios-especiales">
+                    <!-- Generado dinámicamente -->
+                </div>
+            </div>
+
+            <!-- CONTROL MAESTRO DE AUDIO -->
+            <div class="seccion" style="background: #111; border-color: var(--color-amarillo);">
+                <h2 style="color: var(--color-amarillo);">CONTROL MAESTRO</h2>
+                <div class="grid-3">
+                    <button class="btn-audio-select" id="btn-audio-play" style="background: #ffb703; height: 48px; font-size: 1.25rem;" title="Reproducir">▶ Play</button>
+                    <button class="btn-audio-select" id="btn-audio-stop" style="background: #e63946; color: white; height: 48px; font-size: 1.25rem;" title="Detener">⏹ Stop</button>
+                    <button class="btn-audio-select" id="btn-audio-fade" style="background: #8338ec; color: white; height: 48px; font-size: 1.25rem;" title="Fade Out Suave">🔊 Fade</button>
+                </div>
+
+                <!-- SLIDER DE VOLUMEN MASTER -->
+                <div class="volume-control-box">
+                    <div class="volume-header">
+                        <span>VOLUMEN MASTER</span>
+                        <span id="volume-label">100%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="100" class="volume-slider" id="volume-slider">
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="config.js"></script>
+    <script src="control.js"></script>
+</body>
+</html>

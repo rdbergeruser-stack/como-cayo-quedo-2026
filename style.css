@@ -1,0 +1,499 @@
+/* FUENTE LOCAL */
+@font-face {
+    font-family: 'Luckiest Guy Local';
+    src: url('Fuentes/LuckiestGuy-Regular.ttf') format('truetype');
+}
+
+:root {
+    --color-rojo: #E63946;
+    --color-azul: #00A8E8;
+    --color-amarillo: #FFD60A;
+    --color-verde: #2a9d8f;
+    --color-naranja: #fb5607;
+    --bg-inicial: #0e0e14;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-inicial);
+    color: white;
+    font-family: 'Luckiest Guy Local', 'Arial Black', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    transition: background-color 1.5s ease; 
+    position: relative;
+    user-select: none;
+}
+
+#logo-fondo-tablero {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    object-fit: cover; opacity: 0.18; z-index: 1; pointer-events: none;
+}
+
+#control-trigger {
+    position: fixed; bottom: 10px; left: 10px; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.15); cursor: pointer; font-size: 24px;
+    z-index: 1000; transition: color 0.3s;
+}
+#control-trigger:hover { color: rgba(255,255,255,0.7); }
+
+/* ========================================================
+   ESCENARIO Y RULETA HD 4K (5 GÉNEROS)
+   ======================================================== */
+#ruleta-stage {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
+}
+
+#ruleta-wrapper {
+    position: relative;
+    width: min(90vh, 90vw, 920px);
+    height: min(90vh, 90vw, 920px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.98), 0 0 120px rgba(0,0,0,0.8);
+}
+
+#ruleta-halo-glow {
+    position: absolute;
+    width: 106%;
+    height: 106%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(230, 57, 70, 0.3) 0%, rgba(255, 214, 10, 0.18) 50%, rgba(0, 0, 0, 0) 70%);
+    filter: blur(28px);
+    z-index: 2;
+    pointer-events: none;
+    animation: haloPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes haloPulse {
+    0% { transform: scale(0.98); opacity: 0.65; }
+    100% { transform: scale(1.03); opacity: 1; }
+}
+
+#ruleta-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    z-index: 5;
+}
+
+/* AGUJA / FLAPPER INDICADOR SUPERIOR (12 EN PUNTO) CON FÍSICA */
+#ruleta-aguja-box {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 60;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: 50% 12px;
+    transition: transform 0.06s ease-out;
+}
+
+#ruleta-aguja {
+    position: relative;
+    width: 44px;
+    height: 72px;
+    background: linear-gradient(135deg, #ffffff 0%, #fff099 20%, #f4a261 45%, #e76f51 70%, #87280e 100%);
+    clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.95));
+    border-top: 3px solid #fff5b8;
+}
+
+#ruleta-aguja-perno {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #ffd700 35%, #b8860b 70%, #3d2600 100%);
+    border: 3px solid #ffea80;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.9);
+    z-index: 65;
+}
+
+/* CENTRO DORADO METÁLICO (BOSS 3D CON GEMA) */
+#ruleta-centro-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #ffffff 0%, #fff199 18%, #d4af37 48%, #996515 75%, #3d2900 100%);
+    border: 7px solid #ffe885;
+    box-shadow: 0 0 45px rgba(255, 215, 0, 0.7), inset 0 4px 10px rgba(255,255,255,0.9), inset 0 -6px 14px rgba(0,0,0,0.8), 0 12px 30px rgba(0,0,0,0.9);
+    z-index: 45;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hub-gem {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ff8da1 0%, #e63946 45%, #800f2f 85%, #300007 100%);
+    border: 3px solid #ffd700;
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.85), inset 0 -3px 6px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,0.7);
+}
+
+/* PLACA GIGANTE HORIZONTAL ENFRENTE DE LA RULETA AL SALIR SORTEADO */
+#pop-genero-ganador, #ruleta-banner-ganador {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    width: 90%;
+    max-width: 960px;
+    background: linear-gradient(135deg, rgba(14, 14, 24, 0.96) 0%, rgba(28, 6, 12, 0.98) 100%);
+    border: 6px solid #ffd700;
+    outline: 4px solid #ff9100;
+    outline-offset: 4px;
+    border-radius: 28px;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.75), 0 25px 70px rgba(0, 0, 0, 0.95);
+    padding: 24px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
+}
+
+#pop-genero-ganador.show, #ruleta-banner-ganador.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: pulsePopGlow 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes pulsePopGlow {
+    0% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.65), 0 25px 70px rgba(0, 0, 0, 0.95); }
+    100% { box-shadow: 0 0 85px rgba(255, 215, 0, 0.95), 0 25px 80px rgba(0, 0, 0, 1), 0 0 35px #ff9100; }
+}
+
+.pop-genero-badge {
+    font-size: 1.8rem;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#pop-genero-nombre, #ruleta-texto-ganador {
+    margin: 0;
+    font-size: clamp(3.5rem, 5.8vw, 5.8rem);
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    -webkit-text-stroke: 3.5px #000000;
+    text-shadow: 4px 4px 0 #000, 0 0 35px rgba(255, 215, 0, 0.9);
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+/* ========================================================
+   OVERLAYS DE PLACAS, MARQUESINA Y MULTIMEDIA
+   ======================================================== */
+#overlay-genero, #overlay-video {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: black; display: none; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 100;
+}
+
+#img-revelada, #video-player {
+    position: absolute; width: 100%; height: 100%; object-fit: cover;
+}
+
+#overlay-logo-fijo {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: black; display: none; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 100;
+}
+
+.logo-full-centrado {
+    width: 85vw; height: 85vh; object-fit: contain;
+    position: absolute; top: 5%; z-index: 101;
+}
+
+.instagram-banner {
+    position: absolute; bottom: 8%; display: flex; align-items: center;
+    gap: 15px; background: rgba(0, 0, 0, 0.7); padding: 12px 30px;
+    border-radius: 50px; border: 4px solid white; z-index: 102;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.instagram-banner img { width: 45px; height: 45px; object-fit: contain; }
+.instagram-banner span { font-size: 2.8rem; color: white; letter-spacing: 2px; -webkit-text-stroke: 2px black; }
+
+/* MARQUESINA DEL TÍTULO DE LA ESCENA */
+#marquesina {
+    position: relative; z-index: 110; background: white; padding: 30px 80px;
+    border: 12px solid var(--color-rojo); border-radius: 40px;
+    box-shadow: 0 0 0 10px var(--color-amarillo), 0 20px 80px rgba(0,0,0,0.9);
+    text-align: center; opacity: 0; transform: translateY(100px) scale(0.8);
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 88%;
+}
+
+#marquesina.show { opacity: 1; transform: translateY(0) scale(1); }
+
+#marquesina::before {
+    content: ''; position: absolute; top: -22px; left: -22px; right: -22px; bottom: -22px;
+    border: 10px dotted white; border-radius: 50px; animation: parpadeo 0.4s infinite alternate;
+}
+@keyframes parpadeo { from { opacity: 0.3; } to { opacity: 1; filter: drop-shadow(0 0 10px white); } }
+
+#texto-titulo { color: #1a1a1a; font-size: 4.5rem; margin: 0; text-transform: uppercase; word-break: break-word; }
+
+/* TELÓN TEATRAL Y REFLECTORES */
+#overlay-comienzo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #06060a;
+    z-index: 120;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.6s ease;
+}
+
+#theatre-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 121;
+    overflow: hidden;
+}
+
+.curtain-panel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 53%;
+    z-index: 2;
+    transition: transform 1.8s cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.curtain-left {
+    left: 0;
+    transform-origin: left center;
+    box-shadow: 25px 0 45px rgba(0,0,0,0.85);
+}
+
+.curtain-right {
+    right: 0;
+    transform-origin: right center;
+    box-shadow: -15px 0 35px rgba(0,0,0,0.7);
+}
+
+.curtain-folds {
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg, 
+        #2d0006 0px, 
+        #610010 18px, 
+        #9c071d 36px, 
+        #d11a33 48px, 
+        #870518 64px, 
+        #360008 82px
+    );
+    box-shadow: inset 0 0 90px rgba(0,0,0,0.9);
+}
+
+.curtain-gold-trim {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    background: repeating-linear-gradient(90deg, #b38728 0px, #fbf5b7 8px, #daa520 16px, #aa771c 24px);
+    border-top: 3px solid #ffe57f;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.75);
+}
+
+.curtain-left.open { transform: scaleX(0.06) translateX(-95%); }
+.curtain-right.open { transform: scaleX(0.06) translateX(95%); }
+
+.curtain-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 15vh;
+    min-height: 85px;
+    max-height: 130px;
+    z-index: 3;
+    pointer-events: none;
+    transition: transform 1.8s ease;
+}
+
+.valance-swags {
+    display: flex;
+    width: 100%;
+    height: 85%;
+}
+
+.swag {
+    flex: 1;
+    height: 100%;
+    background: radial-gradient(ellipse at top, #b80d24 0%, #6e0012 65%, #330007 100%);
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.8), inset 0 -5px 12px rgba(0,0,0,0.6);
+    border-bottom: 4px solid #d4af37;
+    margin: 0 -2px;
+}
+
+.valance-gold-fringe {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: repeating-linear-gradient(90deg, #ffe57f 0px, #b38728 6px, #ffe57f 12px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.85);
+}
+
+#canvas-comienzo-fx {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 125;
+    pointer-events: none;
+}
+
+#intro-logo-box {
+    position: relative;
+    width: 52vw;
+    max-width: 600px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 122;
+    transform: scale(0.65);
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
+}
+
+#intro-logo-box.show-theatre {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.logo-theatre-glow {
+    position: absolute;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 160, 0, 0.25) 40%, rgba(255, 255, 255, 0) 70%);
+    filter: blur(35px);
+    z-index: 1;
+    animation: theatreGlowPulse 2.2s infinite alternate ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes theatreGlowPulse {
+    0% { transform: scale(0.92); opacity: 0.6; }
+    100% { transform: scale(1.15); opacity: 1; }
+}
+
+#intro-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.9));
+    position: relative;
+    z-index: 2;
+}
+
+#intro-ig-banner {
+    position: absolute;
+    bottom: 25px;
+    z-index: 126;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#intro-ig-banner.show-theatre {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#intro-flash-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 130;
+    transition: opacity 0.35s ease-out;
+}
+
+/* PANTALLA NEGRA (BLACKOUT TEATRAL) */
+#overlay-blackout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 900;
+    transition: opacity 0.35s ease;
+}
+
+#overlay-blackout.activo {
+    opacity: 1;
+    pointer-events: auto;
+}

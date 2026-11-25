@@ -1,0 +1,18 @@
+# Mantener la estructura de la carpeta Videos/ sin subir su contenido
+Videos/*
+!Videos/.gitkeep
+
+# Backups y archivos de prueba locales
+Generos/backup_eea/
+*.png-old
+screenshot_*.png
+screenshot_*.jpg
+final_picadillo_masterpiece.png
+GPicadillo_Master.png
+grid_word.png
+perfect_mask_O.png
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -680,6 +680,8 @@ function ocultarTodosLosOverlays(pausarVideo = true) {
     document.getElementById('overlay-genero').style.display = 'none';
     document.getElementById('overlay-video').style.display = 'none';
     document.getElementById('overlay-logo-fijo').style.display = 'none';
+    const overlayPubliMosquito = document.getElementById('overlay-publi-mosquito');
+    if (overlayPubliMosquito) overlayPubliMosquito.style.display = 'none';
     if (overlayTanteador) overlayTanteador.style.display = 'none';
     document.getElementById('marquesina').classList.remove('show');
     if (bannerGanador) bannerGanador.classList.remove('show');
@@ -1217,6 +1219,18 @@ function lanzarLogoFijo() {
 }
 window.lanzarLogoFijo = lanzarLogoFijo;
 
+function lanzarPubliMosquito() {
+    cancelarGiroYTimers();
+    setBlackout(false);
+    ocultarTodosLosOverlays(true);
+
+    const overlay = document.getElementById('overlay-publi-mosquito');
+    if (overlay) overlay.style.display = 'flex';
+    estado = "MULTIMEDIA";
+    actualizarControlUI("Publicidad: Mosquito en Pantalla");
+}
+window.lanzarPubliMosquito = lanzarPubliMosquito;
+
 // ========================================================
 // 7. REINICIO DEL SHOW
 // ========================================================
@@ -1302,6 +1316,9 @@ if (canalProyector) {
                 break;
             case 'LANZAR_LOGO_FIJO':
                 lanzarLogoFijo();
+                break;
+            case 'LANZAR_PUBLI_MOSQUITO':
+                lanzarPubliMosquito();
                 break;
             case 'LANZAR_VIDEO':
                 lanzarVideo(payload.nombre, payload.ig || false);

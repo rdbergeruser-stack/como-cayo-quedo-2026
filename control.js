@@ -118,6 +118,7 @@ function inicializarUI() {
 
     // 3. Multimedia
     document.getElementById('btn-logo-fijo').onclick = () => enviarAccion('LANZAR_LOGO_FIJO');
+    document.getElementById('btn-publi-mosquito').onclick = () => enviarAccion('LANZAR_PUBLI_MOSQUITO');
 
     // 3B. Tanteador (Rojo vs Verde)
     const leerPuntaje = (inputEl) => {

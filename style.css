@@ -243,7 +243,7 @@ body {
     position: absolute; width: 100%; height: 100%; object-fit: cover;
 }
 
-#overlay-logo-fijo {
+#overlay-logo-fijo, #overlay-publi-mosquito {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: black; display: none; flex-direction: column;
     align-items: center; justify-content: center; z-index: 100;
@@ -251,6 +251,11 @@ body {
 
 .logo-full-centrado {
     width: 85vw; height: 85vh; object-fit: contain;
+    z-index: 101;
+}
+
+.publi-full-imagen {
+    width: 100vw; height: 100vh; object-fit: contain;
     z-index: 101;
 }
 

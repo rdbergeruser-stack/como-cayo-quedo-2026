@@ -117,7 +117,6 @@ function inicializarUI() {
     }
 
     // 3. Multimedia
-    document.getElementById('btn-video-inicio-gracioso').onclick = () => enviarAccion('LANZAR_INICIO_GRACIOSO');
     document.getElementById('btn-logo-fijo').onclick = () => enviarAccion('LANZAR_LOGO_FIJO');
 
     // 3B. Tanteador (Rojo vs Verde)

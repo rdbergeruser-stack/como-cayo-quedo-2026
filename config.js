@@ -93,7 +93,7 @@ const EEA_CONFIG = {
             nombre: "Banquito", 
             icono: "🪑",
             imagen: "Generos/GBanquito.png", 
-            audio: "Audio/Presentacion.mp3", 
+            audio: "Audio/Banquito.mp3", 
             color: "#fb5607",
             colorLight: "#ff7b00"
         },

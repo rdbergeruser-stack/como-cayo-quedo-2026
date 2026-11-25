@@ -723,7 +723,7 @@ function lanzarBanquito(titulo = null) {
     ultimoGanador = "Banquito";
     guardarEstadoShow();
 
-    const bgAudio = audioMapa["Banquito"] || "Audio/Presentacion.mp3";
+    const bgAudio = audioMapa["Banquito"] || "Audio/Banquito.mp3";
     prepararAudio(bgAudio, 'btn-audio-banquito', "Banquito");
 
     lanzarFase1(titulo);

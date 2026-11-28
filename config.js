@@ -114,7 +114,21 @@ const EEA_CONFIG = {
         { id: "rem", nombre: "🎹 MÚSICA REMATE", archivo: "Audio/Remate.mp3", color: "#2196F3" }
     ],
 
-    // 4. Equipos para el tanteador (Rojo vs Verde)
+    // 4. Actores del espectáculo (imágenes en carpeta Actores/)
+    actores: [
+        { id: "anto-curvale", nombre: "Anto Curvale", imagen: "Actores/AntoCurvale.png" },
+        { id: "gaby-farber", nombre: "Gaby Farber", imagen: "Actores/Gabyfarber.png" },
+        { id: "dorita-seigorman", nombre: "Dorita Seigorman", imagen: "Actores/DoritaSeigorman.png" },
+        { id: "veronica-elgberg", nombre: "Veronica Elgberg", imagen: "Actores/VeronicaElgberg.png" },
+        { id: "sol-milessi", nombre: "Sol Milessi", imagen: "Actores/SolMilessi.png" },
+        { id: "silvina-suarez", nombre: "Silvina Suarez", imagen: "Actores/SilvinaSuarez.png" },
+        { id: "andrea-costa", nombre: "Andrea Costa", imagen: "Actores/AndreaCosta.png" },
+        { id: "javier-osequer", nombre: "Javier Osequer", imagen: "Actores/JavierOsequer.png" },
+        { id: "alicia-bertelloti", nombre: "Alicia Bertelloti", imagen: "Actores/AliciaBertelloti.png" },
+        { id: "turque-zapata", nombre: "Turque Zapata", imagen: "Actores/TurqueZapata.png" }
+    ],
+
+    // 5. Equipos para el tanteador (Rojo vs Verde)
     equipos: {
         rojo: { nombre: "EQUIPO ROJO", color: "#E63946", colorLight: "#ff5c6a", colorDark: "#8f111c" },
         verde: { nombre: "EQUIPO VERDE", color: "#16a34a", colorLight: "#4ade80", colorDark: "#14532d" }

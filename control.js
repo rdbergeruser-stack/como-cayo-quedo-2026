@@ -120,6 +120,29 @@ function inicializarUI() {
     document.getElementById('btn-logo-fijo').onclick = () => enviarAccion('LANZAR_LOGO_FIJO');
     document.getElementById('btn-publi-mosquito').onclick = () => enviarAccion('LANZAR_PUBLI_MOSQUITO');
 
+    // 3A. Botones de Actores
+    const contActores = document.getElementById('contenedor-actores');
+    if (contActores && Array.isArray(cfg.actores)) {
+        contActores.innerHTML = '';
+        cfg.actores.forEach(actor => {
+            const btn = document.createElement('button');
+            btn.id = `btn-actor-${actor.id}`;
+            btn.className = actor.imagen ? 'btn-actor' : 'btn-actor sin-foto';
+            btn.textContent = actor.nombre;
+            if (!actor.imagen) {
+                btn.title = 'Foto pendiente de asociar';
+            }
+            btn.onclick = () => {
+                if (!actor.imagen) {
+                    mostrarToast(`${actor.nombre}: todavía no tiene foto asociada.`, 'info', 2500);
+                    return;
+                }
+                enviarAccion('LANZAR_ACTOR', { nombre: actor.nombre, imagen: actor.imagen });
+            };
+            contActores.appendChild(btn);
+        });
+    }
+
     // 3B. Tanteador (Rojo vs Verde)
     const leerPuntaje = (inputEl) => {
         const val = parseInt(inputEl?.value, 10);

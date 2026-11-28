@@ -389,6 +389,23 @@ button:active {
     width: 100%;
 }
 
+.btn-actor {
+    background: #6d28d9;
+    color: white;
+    font-size: 0.92rem;
+    padding: 8px 6px;
+    box-shadow: 3px 3px 0 black;
+    width: 100%;
+    line-height: 1.15;
+    letter-spacing: 0.4px;
+}
+
+.btn-actor.sin-foto {
+    background: #383846;
+    color: #a8a8ba;
+    border-style: dashed;
+}
+
 .btn-audio-select {
     padding: 10px 4px;
     border: 3px solid black;

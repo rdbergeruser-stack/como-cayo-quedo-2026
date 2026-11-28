@@ -682,6 +682,8 @@ function ocultarTodosLosOverlays(pausarVideo = true) {
     document.getElementById('overlay-logo-fijo').style.display = 'none';
     const overlayPubliMosquito = document.getElementById('overlay-publi-mosquito');
     if (overlayPubliMosquito) overlayPubliMosquito.style.display = 'none';
+    const overlayActor = document.getElementById('overlay-actor');
+    if (overlayActor) overlayActor.style.display = 'none';
     if (overlayTanteador) overlayTanteador.style.display = 'none';
     document.getElementById('marquesina').classList.remove('show');
     if (bannerGanador) bannerGanador.classList.remove('show');
@@ -847,12 +849,6 @@ function detenerSorteo(idx) {
 
     actualizarControlUI();
     notificarCanalControl('GENERO_ELEGIDO', { genero: generosRuleta[idx].nombre });
-
-    detenerTimeouts.push(setTimeout(() => {
-        if (estado === "ESPERANDO_INPUT") {
-            lanzarFase1();
-        }
-    }, 3500));
 }
 
 // ========================================================
@@ -1231,6 +1227,24 @@ function lanzarPubliMosquito() {
 }
 window.lanzarPubliMosquito = lanzarPubliMosquito;
 
+function lanzarActor(nombre, imagen) {
+    if (!imagen) return;
+    cancelarGiroYTimers();
+    setBlackout(false);
+    ocultarTodosLosOverlays(true);
+
+    const imgEl = document.getElementById('img-actor');
+    const overlay = document.getElementById('overlay-actor');
+    if (imgEl) {
+        imgEl.src = imagen;
+        imgEl.alt = nombre || 'Actor';
+    }
+    if (overlay) overlay.style.display = 'flex';
+    estado = "MULTIMEDIA";
+    actualizarControlUI(`Actor: ${nombre || ''}`.trim());
+}
+window.lanzarActor = lanzarActor;
+
 // ========================================================
 // 7. REINICIO DEL SHOW
 // ========================================================
@@ -1319,6 +1333,9 @@ if (canalProyector) {
                 break;
             case 'LANZAR_PUBLI_MOSQUITO':
                 lanzarPubliMosquito();
+                break;
+            case 'LANZAR_ACTOR':
+                lanzarActor(payload.nombre, payload.imagen);
                 break;
             case 'LANZAR_VIDEO':
                 lanzarVideo(payload.nombre, payload.ig || false);
